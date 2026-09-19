@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Instagram Username Generator by VINS</title>
+
+<link rel="icon" type="image/png" href="favicon.png">
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    min-height:100vh;
+    background:#050505;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+.container{
+    width:100%;
+    max-width:1100px;
+    margin:auto;
+    padding:25px 18px 40px;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo{
+    font-size:42px;
+    font-weight:900;
+    letter-spacing:8px;
+    color:#ff0000;
+    text-shadow:0 0 15px rgba(255,0,0,.35);
+}
+
+.subtitle{
+    margin-top:5px;
+    font-size:12px;
+    letter-spacing:4px;
+    color:#888;
+}
+
+.card{
+    background:#0d0d0d;
+    border:1px solid #242424;
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 0 25px rgba(255,0,0,.04);
+}
+
+.controls{
+    display:grid;
+    grid-template-columns:1fr 1fr 120px 170px;
+    gap:12px;
+    align-items:end;
+}
+
+label{
+    display:block;
+    color:#aaa;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin-bottom:7px;
+}
+
+select,
+input{
+    width:100%;
+    height:45px;
+    background:#080808;
+    border:1px solid #292929;
+    border-radius:8px;
+    color:#fff;
+    padding:0 12px;
+    outline:none;
+}
+
+select:focus,
+input:focus{
+    border-color:#ff0000;
+}
+
+.generate{
+    height:45px;
+    border:0;
+    border-radius:8px;
+    background:#e00000;
+    color:#fff;
+    font-weight:900;
+    letter-spacing:1px;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.generate:hover{
+    background:#ff0000;
+    transform:translateY(-1px);
+}
+
+.generate:active{
+    transform:scale(.97);
+}
+
+.result-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.result-title{
+    color:#ff0000;
+    font-size:14px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.copyall{
+    background:#151515;
+    color:#fff;
+    border:1px solid #333;
+    border-radius:7px;
+    padding:9px 13px;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.copyall:hover{
+    border-color:#ff0000;
+    color:#ff0000;
+}
+
+.results{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+}
+
+.result-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background:#080808;
+    border:1px solid #1f1f1f;
+    border-radius:8px;
+    padding:11px 12px;
+    transition:.15s;
+}
+
+.result-item:hover{
+    border-color:#500000;
+}
+
+.result-info{
+    min-width:0;
+}
+
+.username{
+    color:#fff;
+    font-size:14px;
+    font-weight:bold;
+    word-break:break-all;
+}
+
+.full-name{
+    margin-top:4px;
+    color:#777;
+    font-size:11px;
+    text-transform:capitalize;
+}
+
+.copy{
+    flex-shrink:0;
+    background:#161616;
+    border:1px solid #2b2b2b;
+    color:#aaa;
+    border-radius:6px;
+    padding:6px 9px;
+    font-size:10px;
+    cursor:pointer;
+}
+
+.copy:hover{
+    color:#fff;
+    border-color:#ff0000;
+}
+
+.copy.done{
+    color:#00ff66;
+    border-color:#00ff66;
+}
+
+.empty{
+    grid-column:1/-1;
+    text-align:center;
+    color:#444;
+    padding:40px 10px;
+    user-select:none;
+    pointer-events:none;
+}
+
+.count{
+    text-align:right;
+    color:#666;
+    font-size:11px;
+    margin-top:13px;
+}
+
+.footer{
+    text-align:center;
+    color:#444;
+    font-size:10px;
+    letter-spacing:2px;
+    margin-top:20px;
+}
+
+.footer span{
+    color:#ff0000;
+}
+
+@media(max-width:800px){
+    .controls{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .generate{
+        grid-column:1/-1;
+    }
+}
+
+@media(max-width:600px){
+    .results{
+        grid-template-columns:1fr;
+    }
+
+    .controls{
+        grid-template-columns:1fr;
+    }
+
+    .generate{
+        grid-column:auto;
+    }
+
+    .logo{
+        font-size:34px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header class="header">
+        <div class="logo">MAS.ICLIK</div>
+        <div class="subtitle">INSTAGRAM USERNAME GENERATOR</div>
+    </header>
+
+
+    <!-- CONTROLS -->
+    <section class="card">
+
+        <div class="controls">
+
+            <div>
+                <label>Gaya Username</label>
+
+                <select id="style">
+
+                    <option value="random">Random Mix</option>
+                    <option value="aesthetic">Aesthetic</option>
+                    <option value="clean">Clean</option>
+                    <option value="cute">Cute</option>
+                    <option value="classy">Classy</option>
+                    <option value="short">Short</option>
+
+                </select>
+            </div>
+
+
+            <div>
+                <label>Negara Username</label>
+
+                <select id="country">
+
+                    <option value="us">USA</option>
+                    <option value="id">Indonesia</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="fr">France</option>
+                    <option value="de">Germany</option>
+                    <option value="it">Italy</option>
+                    <option value="es">Spain</option>
+                    <option value="jp">Japan</option>
+                    <option value="kr">South Korea</option>
+
+                </select>
+            </div>
+
+
+            <div>
+                <label>Jumlah</label>
+
+                <input
+                    id="amount"
+                    type="number"
+                    value="20"
+                    min="1"
+                    max="100"
+                >
+            </div>
+
+
+            <button
+                class="generate"
+                id="generate"
+            >
+                ✦ GENERATE
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESULT -->
+    <section class="card">
+
+        <div class="result-head">
+
+            <div class="result-title">
+                RESULT
+            </div>
+
+            <button
+                class="copyall"
+                id="copyAll"
+            >
+                ▣ COPY ALL
+            </button>
+
+        </div>
+
+
+        <div
+            id="results"
+            class="results"
+        >
+
+            <div class="empty">
+                Belum ada username.
+            </div>
+
+        </div>
+
+
+        <div
+            id="count"
+            class="count"
+        ></div>
+
+    </section>
+
+
+    <div class="footer">
+        • CREATION BY
+        <span>MAS ICLIK</span>
+        •
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   NAMA PER NEGARA
+   ========================================================= */
+
+
+/* =========================================================
+   USA NAMES
+   EDIT BAGIAN INI SAJA JIKA MAU GANTI NAMA USA
+
+   FORMAT:
+   ["nama_depan","nama_belakang","nama_depan","nama_belakang",...]
+
+   Nama depan dan belakang akan dipisahkan otomatis.
+   Setiap GENERATE akan mengacak keduanya.
+   ========================================================= */
+
+const usaNames = [
+"shannon","harrison","rosie","hawkins","tegan","turner","megan","shaw","holly","john","tamia","burke","kira","cooper","annabel","blankenship","esther","thomas","eden","sellers","chelsea","gordon","cerys","turner","elsie","martin","lucy","richardson","madeleine","baker","colette","stevenson","dahlia","frederick","melina","burnett","milena","giles","piper","morrison","victoria","lowe","aimee","lane","lexi","rose","anna","cook","sophia","burns","jordynn","carter","milania","case","larissa","dalton","abby","shields","paislee","powers","laura","atkinson","daisy","campbell","erin","thompson","sara","wood","heidi","butler","esther","peck","myah","kerr","lea","greer","cataleya","chan","geraldine","chen","leah","marsh","lauren","baker","lauren","walker","morgan","lane","niamh","hunter","alyson","roberts","violet","watts","amelie","kelley","celia","gross","paloma","manning","bella","knight","martha","wright","natasha","newman","maddison","mitchell","abbie","taylor","christine","santos","gracelynn","cohen","madalyn","myers","alisson","mendoza","bryn","bullock","melissa","willis","kate","roberts","demi","hopkins","eliza","perry","lilly","butler","kendal","salinas","gracelynn","dillon","jazmin","hayden","adley","robertson","lindsey","carver","katherine","hamilton","julia","cox","mya","wilkinson","alexandra","thomson","katherine","austin","alexia","browning","paris","rose","gianna","goodwin","kendal","ortiz","johanna","juarez","eve","lane","sophie","gill","maddison","booth","martha","richardson","laura","francis","marie","patterson","heidi","holman","sandra","reed","dayana","woods","savannah","dodson","bethany","carter","natasha","hayes","heidi","booth","amber","lewis","libby","ball","nylah","maddox","brianna","potter","tiffany","sosa","briella","parker","kynlee","vinson","lexi","mills","lacey","clark","grace","wilkinson","zoe","jenkins","niamh","harrison","harlee","dean","melissa","burt","saniyah","massey","miriam","nixon","kimora","crane","millie","butler","yasmin","robinson","sara","john","rachel","adams","rose","allen","riya","rosales","raquel","hubbard","estelle","mcleod","cheyanne","whitley","ana","henry","harriet","hopkins","demi","may","yasmin","williams","laura","burns","melissa","richards","milana","barrett","lexi","king","alaya","hays","bryleigh","kerr","leila","newman","elizabeth","doyle","laura","duncan","mya","dean","evie","thomas","tilly","lawson","melina","walls","alannah","sanders","galilea","waller","regan","doyle","karla","young","nicole","lowe","georgina","lawson","sophie","booth","abby","fox","maisy","thomas","lillyana","livingston","lucille","ford","brenna","townsend","sadie","horton","amber","bauer","madison","campbell","alex","barnes","lola","hayes","freya","palmer","kayleigh","ball","kendal","long","sandra","hinton","brynlee","jennings","kiana","scott","kaitlyn","brady","kayla","cox","kate","johnston","keira","parry","melissa","burke","erin","moore","valerie","ryan","ally","bentley","hallie","oliver","kailynn","graham","charlee","ryan","freya","pearce","layla","davies","tia","carter","eva","gray","skye","carter","jaelyn","parsons","aaliyah","levine","kaliyah","robertson","aviana","craig","kendall","hernandez","phoebe","phillips","alice","wilson","millie","ryan","maisie","davidson","mya","mills","heather","vaughan","cristina","barton","kenia","hanson","camille","alexander","brinley","hernandez","alisha","mcdonald","skye","baker","maria","moss","freya","ward","abigail","barrett","estelle","barrett","macy","shaw","paisley","long","adelina","bray","priscilla","hicks","libby","baker","freya","carter","madison","mccarthy","keira","robinson","molly","gordon","kailynn","callahan","helen","bowers","julianne","moran","chelsea","bond","iliana","hogan","esme","gordon","yasmin","clarke","samantha","parker","lola","shaw","julia","harris","elaine","gates","kallie","palmer","estella","whitaker","morgan","dunlap","jade","wilcox","amelie","rees","hannah","powell","holly","gordon","sarah","murray","shannon","hussain","kadence","delgado","mary","austin","adelynn","larsen","lillian","richmond","abigail","schmidt","morgan","hunter","hannah","stewart","madeleine","newman","nicole","khan","lauren","gardner","reagan","casey","caylee","mann","sarai","santiago","campbell","rowe","camilla","santana","lola","brown","lydia","carr","eva","wilson","anna","johnston","shannon","butler","jasmine","albert","lorelei","osborne","lucia","miranda","sariyah","hanson","alexandra","bauer","madison","hall","brooke","spencer","mollie","jenkins","jessica","wallace","erin","gallagher","zoie","gilliam","amy","moran","isla","glass","evalyn","whitney","macy","livingston","katherine","perry","ruby","cooke","maisy","powell","paige","kelly","lydia","wilson","amira","oliver","felicity","stewart","aviana","nolan","lisa","bentley","gabrielle","hill","aimee","black","faith","harper","zara","george","lily","rees","natasha","baker","clarissa","rush","olivia","house","gianna","lewis","kensley","moore","zariah","estes","lauren","davidson","phoebe","duncan","isabelle","hawkins","maisie","spencer","harriet","jackson","briana","ford","samara","ayers","maci","yates","iliana","armstrong","carly","bryan","bethany","moore","lily","rose","eliza","holland","maisy","grant","scarlett","lowe","chaya","jones","melanie","mason","adeline","caldwell","susan","hubbard","kayden","brown","madison","stone","kayleigh","byrne","caitlin","walsh","faith","hawkins","erin","allen","khloe","anderson","briley","mcknight","cheyenne","stanton","emely","bryan","lucia","simpson","erin","pearce","lacey","kennedy","maddison","jackson","alicia","gallagher","georgina","watts","savannah","clay","arabella","barlow","aryanna","petty","zariyah","weaver","chloe","chan","daisy","marshall","evelyn","wilkinson","chloe","murphy","paige","newman","nicole","johnston","dalilah","dillard","paris","snyder","adrienne","hanson","yaritza","dillon","rosalie","henry","isabel","nicholson","maria","elliott","evie","gill","imogen","parry","sarah","ellis","joslyn","doyle","kiley","may","kaylynn","simon","giuliana","dillard","liberty","goodman","katherine","read","eliza","clarke","imogen","mason","eloise","bailey","abbie","gray","emilia","wong","kyleigh","holmes","britney","yang","gabriella","mccoy","britney","douglas","zara","porter","hannah","lewis","eve","poole","lexi","owen","kayleigh","west","bryleigh","burks","lauren","watkins","erin","rios","grace","jordan","journee","merrill","mia","newman","maddison","hall","skye","lee","emma","webb","madeleine","miller","kailee","vincent","charlize","herring","grace","bernard","sarai","durham","phoenix","mejia","lilly","saunders","emily","white","tegan","richardson","elsie","dawson","ruby","john","anya","norman","brynlee","richards","kaitlin","dickerson","laura","hampton","rylie","wagner","katherine","dawson","maddison","gill","sienna","jordan","samantha","saunders","maddison","dixon","mercedes","combs","halle","meadows","annie","bright","makenzie","mcfadden","alayah","burgess","samantha","mason","amy","berry","evie","khan","eve","marsh","sienna","burns","annalee","larsen","selah","charles","giovanna","mckinney","eliza","hampton","lara","harper","jasmine","brown","lily","jones","naomi","lloyd","hannah","moore","abby","byrne","sandra","dillard","anne","hancock","martha","kent","paislee","fowler","ciara","brennan","megan","green","maddison","marshall","layla","harrison","amelia","baxter","leah","ryan","chana","palmer","yaretzi","mejia","alannah","mcfadden","kensley","cruz","brittany","reeves","lily","hawkins","olivia","carr","poppy","barrett","libby","matthews","heidi","powell","shelby","coleman","avianna","barlow","amanda","ballard","kaylen","hayes","christine","bartlett","katie","morgan","demi","lee","samantha","miller","lola","andrews","samantha","bell","ansley","knapp","amy","fitzgerald","aleigha","buck","braelynn","gilliam","london","talley","millie","kennedy","amy","davies","millie","young","amelie","davis","isla","john","aliana","dodson","clara","castro","zaria","fuentes","alessandra","winters","saanvi","moss","eliza","reid","rose","davidson","isabel","cook","faith","sutton","faith","byrne","laura","kerr","jade","ortega","lillyana","sexton","ayleen","santana","ryann","carpenter","mollie","kennedy","hollie","fisher","anna","stewart","madeleine","rees","alicia","pearson","harley","little","jessie","walker","aleigha","downs","ayla","combs","sharon","anthony","elizabeth","austin","louise","kennedy","lacey","khan","aimee","thomas","naomi","fraser","denise","short","carlee","haynes","payton","lambert","lindsey","hayden","lilliana","mcconnell","alice","holmes","chelsea","hamilton","hollie","brooks","zara","cooper","anna","pearson","alina","wade","leslie","goff","aniyah","chavez","nora","england","sage","wilson","kayleigh","hayes","victoria","may","grace","watson","bella","campbell","shannon","young","lily","potter","jocelynn","compton","brooklyn","stanton","celia","mcneil","galilea","murphy","mollie","hawkins","lacey","williams","ella","james","julia","thomson","keira","mason","megan","bruce","ryan","stevens","giovanna","anthony","rihanna","diaz","ashtyn","wilkerson","cerys","anderson","madeleine","thomas","amelia","webb","elizabeth","edwards","isla","gray","alessandra","colon","lexie","jimenez","penelope","frye","ansley","huffman","temperance","pacheco","lola","mitchell","emilia","lowe","leah","davies","morgan","reynolds","millie","stone","britney","benson","landry","clay","cheyenne","carson","meghan","becker","aiyana","carver","molly","hussain","lauren","berry","megan","johnston","hollie","fisher","jade","cox","paige","barrett","charlie","brooks","mae","medina","karis","jensen","laney","hughes","emma","baxter","demi","jenkins","megan","powell","skye","simpson","katherine","chambers","jazzlyn","leon","aileen","phelps","lydia","garcia","bree","wade","stella","shelton","alice","lee","georgia","turner","abbie","barnes","isabelle","allen","naomi","shaw","alondra","lucas","hadley","burris","riley","burke","analia","clements","haven","zimmerman","jennifer","watson","danielle","hall","katherine","booth","esme","miller","keira","harper","iliana","cruz","heidi","brock","tia","nixon","angeline","lamb","carolyn","beasley","alice","read","bethany","rose","charlie","dawson","mya","hall","maddison","smith","sierra","curtis","nathalie","strong","amirah","mcconnell","carolina","nolan","elsa","parrish","alisha","clark","poppy","walsh","ellie","jackson","hollie","kelly","paige","burton","lara","bullock","dallas","ward","carolina","richards","tara","emerson","aviana","bray","isabel","grant","erin","allen","amy","hopkins","alisha","gill","madeleine","parry","janiya","melton","camila","stephens","aileen","mooney","aubriana","gutierrez","kaylyn","emerson","lauren","hughes","naomi","roberts","naomi","phillips","amber","gardner","maddison","porter","asia","ochoa","camila","chase","samara","morrison","kyndall","barry","christine","good","lexi","collins","abby","mcdonald","maddison","griffiths","amber","hayes","matilda","porter","saige","stout","leanna","fisher","bianca","mcmillan","alisson","page","alexa","donovan","harriet","thompson","phoebe","dixon","daisy","hughes","kayleigh","nicholson","alice","powell","judith","dejesus","mollie","cardenas","ariel","rich","clarissa","cote","camryn","shannon","ruby","stone","katherine","barrett","zoe","burns","ruby","king","amy","wood","kaylen","fuller","kaylen","holcomb","maia","travis","coraline","donovan","ciara","cummings","madison","bennett","kayla","mason","demi","harrison","sophia","davidson","amy","spencer","margaret","thornton","zoey","roberts","barbara","shaffer","kennedi","michael","larissa","dickerson","melissa","matthews","isabel","harrison","sophia","brooks","willow","harper","abby","chambers","macy","schwartz","everly","rodriquez","adrienne","byers","kaydence","tyson","martha","mueller","elsie","fraser","cerys","harris","imogen","fox","emma","parker","eve","williams","maliah","navarro","celine","pate","cindy","ray","irene","valenzuela","ximena","aguirre","evelyn","davis","evie","hamilton","lexi","price","emilia","walsh","cerys","owen","sarahi","gallegos","chaya","maddox","aleah","pena","carolina","colon","bella","travis","ava","rees","georgia","wells","keira","howard","martha","palmer","alex","ross","amber","galloway","kassidy","craig","giada","jarvis","aubriana","mcleod","ayanna","kirby","abby","lawson","naomi","burton","kate","scott","alicia","sutton","elsie","gordon","lana","haney","julie","charles","zoe","sawyer","madalynn","white","camille","fleming","zara","marshall","yasmin","chapman","kayleigh","ball","sophie","cooke","martha","adams","june","tran","azalea","levy","audrina","wright","tamia","calhoun","mollie","haney","eve","harper","shannon","howard","emily","watson","imogen","evans","millie","richardson","aniyah","graves","leia","wiggins","annabel","young","emelia","pollard","clarissa","church","victoria","hart","rose","ball","lily","miller","leah","pearce","heidi","mills","desiree","hancock","armani","pitts","sarahi","moody","talia","vance","renee","cote","megan","jordan","libby","cole","lauren","west","summer","macdonald","laura","porter","lilyanna","patrick","briley","boyle","jennifer","berger","akira","tran","alyson","morrow","eva","williamson","elsie","barker","katie","byrne","samantha","saunders","willow","ross","kaylynn","langley","angelica","phillips","emma","weeks","sylvia","lloyd","jocelyn","larson","lilly","black","holly","barrett","libby","grant","maya","rogers","harriet","booth","genesis","valenzuela","taylor","tate","priscilla","wolf","aubri","yates","aliana","gibson","abbie","richards","lexi","mason","olivia","cunningham","hannah","cooke","lily","phillips","kyndall","brown","tia","o'brien","jaelyn","burris","karlee","brock","gia","whitney","caitlin","cunningham","layla","johnston","molly","poole","louise","duncan","ellie","simpson","hana","bailey","haylee","robles","diamond","herrera","brylee","thornton","emilee","bowen","sara","webb","kayleigh","poole","grace","parker","holly","hayes","zoe","moore","janelle","rhodes","lilia","berg","meredith","graves","autumn","sims","melina","avila","sophia","butler","alice","fraser","abby","saunders","louise","jones","alex","owen","emory","rowe","saniyah","higgins","cailyn","stanton","leanna","johnson","leila","buckner","erin","davis","skye","rose","jennifer","walsh","katherine","barker","rosie","ryan","mikayla","mccray","kaleigh","ray","gloria","reid","sofie","tanner","charley","lowe","paige","atkinson","tia","turner","erin","austin","ellie","booth","rebecca","hopkins","izabelle","reese","makayla","merritt","elissa","blevins","reese","holland","arya","morse","abbie","young","maisy","hamilton","holly","palmer","chelsea","hall","lucy","anderson","maci","higgins","ryan","sellers","braelyn","hunter","danna","fernandez","braelynn","lewis","isabella","young","summer","lewis","elsie","clarke","kayla","andrews","demi","read","kaylynn","lee","athena","glass","crystal","bright","catalina","boyer","kimora","richardson","niamh","shaw","freya","berry","daisy","anderson","phoebe","bell","isabelle","turner","lainey","wells","ella","camacho","destiny","macdonald","miah","morse","anika","pruitt","bethany","carter","jennifer","sharp","leah","lowe","danielle","lowe","sofia","stewart","elise","church","aiyana","jenkins","brynlee","reed","kelsey","saunders","kensley","barron","louise","andrews","madison","may","olivia","houghton","jodie","lawrence","morgan","houghton","valeria","parks","carmen","hansen","chanel","george","harper","fischer","jocelyn","ratliff","lilly","holland","madison","henderson","amber","baker","amy","clarke","eva","stewart","jasmin","terry","camryn","wall","anahi","hendricks","ellie","poole","annabella","wyatt","charlotte","anderson","willow","simpson","shannon","sharp","caitlin","newman","leah","james","milan","gomez","rebecca","miranda","zaniyah","dillon","nylah","lowe","savanna","young","caitlin","rose","olivia","rose","tia","smith","danielle","davies","isabelle","robertson","finley","dotson","nylah","chase","ivy","alford","hanna","luna","sarah","finch","layla","king","evie","murphy","demi","watts","tia","campbell","sarah","porter","elsa","guy","michelle","hester","sonia","spencer","melody","massey","milena","porter","isobel","lane","willow","francis","olivia","day","alex","fraser","matilda","murray","yasmin","brady","paola","horne","reagan","grant","emmy","harding","deborah","head","sienna","robinson","willow","fraser","danielle","evans","jodie","green","aimee","phillips","marina","washington","jasmine","rich","haley","houston","tessa","solis","ruby","reyes","danielle","price","danielle","gill","heidi","watts","lexie","stone","jennifer","gardner","ayana","spencer","kayla","freeman","ava","walter","zahra","mckee","jaylah","mccullough","leah","knight","alice","hunter","caitlin","marshall","sienna","hudson","kayleigh","fletcher","mikayla","ramsey","adley","mcknight","ashlynn","dillard","amber","weeks","cherish","smith","maya","george","demi","reid","charlie","williamson","lexie","campbell","kayleigh","russell","ella","ellis","kendyl","dominguez","aryanna","odom","kendyl","grant","margaret","garrett","lexie","taylor","willow","price","charlotte","lane","abby","brooks","mia","taylor","leilani","best","alaysia","berger","maryam","day","christina","tillman","milan","mills","cerys","chapman","olivia","hamilton","lacey","simpson","georgina","davis","tilly","sharp","journey","neal","kora","hebert","evelynn","dickson","aspen","mcconnell","kali","garza","eleanor","hayes","isabelle","burns","mollie","lane","poppy","scott","morgan","bell","janelle","kline","christine","sandoval","perla","reyes","addisyn","wynn","elsie","soto","charlie","thomas","emilia","richards","sophia","mccarthy","lexie","pearce","eve","pearce","raylee","mendoza","teagan","fernandez","emerson","edwards","brisa","cantrell","elise","guy","jasmine","thomas","olivia","marshall","morgan","jenkins","elizabeth","bradley","lola","cooper","journee","knox","clara","cobb","laylah","walter","mae","knight","cindy","meyer","rosie","knight","lexie","allen","sophia","ball","emilia","gardner","chloe","walsh","jenna","benton","audrey","crane","journee","stephenson","lana","holmes","yasmin","potter","courtney","cole","madison","edwards","paige","russell","bella","chambers","lacey","brown","eileen","munoz","skye","dominguez","brenna","dillon","kaya","young","alaya","garner"
+];
+
+
+/* =========================================================
+   NEGARA LAIN
+   ========================================================= */
+
+const names = {
+
+    us: usaNames,
+
+    id: [
+        "alya","putri",
+        "nayla","zahra",
+        "aulia","rahma",
+        "salsa","amanda",
+        "nabila","sari",
+        "tiara","maharani",
+        "dinda","permata",
+        "citra","lestari",
+        "syifa","azizah",
+        "bella","anggraini",
+        "amelia","safitri",
+        "keyla","anindya",
+        "shania","putri",
+        "alisha","ramadhani",
+        "fira","maulida"
+    ],
+
+    uk: [
+        "olivia","grace",
+        "amelia","rose",
+        "isla","may",
+        "ava","jane",
+        "emily","anne",
+        "ella","louise",
+        "poppy","mae",
+        "lily","kate",
+        "sophie","jane",
+        "freya","alice",
+        "florence","rose",
+        "charlotte","anne",
+        "evie","grace",
+        "elsie","may",
+        "matilda","rose"
+    ],
+
+    fr: [
+        "chloe","martin",
+        "camille","bernard",
+        "manon","dubois",
+        "lea","moreau",
+        "clara","robert",
+        "juliette","richard",
+        "alice","durand",
+        "emma","petit",
+        "louise","leroy",
+        "rose","morel",
+        "amelie","fournier"
+    ],
+
+    de: [
+        "emma","schmidt",
+        "mia","schneider",
+        "hannah","fischer",
+        "anna","weber",
+        "lea","meyer",
+        "lena","wagner",
+        "clara","becker",
+        "sophie","schulz",
+        "emilia","hoffmann",
+        "lotte","krause",
+        "julia","richter"
+    ],
+
+    it: [
+        "sofia","rossi",
+        "giulia","russo",
+        "aurora","ferrari",
+        "alice","esposito",
+        "beatrice","romano",
+        "giorgia","colombo",
+        "camilla","ricci",
+        "martina","marino",
+        "chiara","greco",
+        "francesca","bruno",
+        "elisa","gallo"
+    ],
+
+    es: [
+        "lucia","garcia",
+        "sofia","martinez",
+        "martina","lopez",
+        "valeria","sanchez",
+        "paula","perez",
+        "emma","gomez",
+        "carmen","martin",
+        "alba","jimenez",
+        "clara","ruiz",
+        "lucia","hernandez",
+        "nora","diaz",
+        "maria","moreno"
+    ],
+
+    jp: [
+        "yui","tanaka",
+        "sakura","sato",
+        "hina","suzuki",
+        "mei","takahashi",
+        "aoi","watanabe",
+        "rin","ito",
+        "mio","yamamoto",
+        "yuna","nakamura",
+        "akari","kobayashi",
+        "misaki","kato",
+        "haruka","yoshida"
+    ],
+
+    kr: [
+        "seo","yeon",
+        "ji","woo",
+        "min","seo",
+        "ha","eun",
+        "yuna","kim",
+        "sora","park",
+        "nari","choi",
+        "mina","jung",
+        "jiwoo","kang",
+        "eunji","han",
+        "sumin","lee"
+    ]
+
+};
+
+
+/* =========================================================
+   HELPER
+   ========================================================= */
+
+function randomItem(array){
+
+    return array[
+        Math.floor(
+            Math.random() * array.length
+        )
+    ];
+
+}
+
+
+/*
+   Fisher-Yates Shuffle
+   Untuk benar-benar mengacak array.
+*/
+
+function shuffle(array){
+
+    const arr = [...array];
+
+    for(
+        let i = arr.length - 1;
+        i > 0;
+        i--
+    ){
+
+        const j = Math.floor(
+            Math.random() * (i + 1)
+        );
+
+        [
+            arr[i],
+            arr[j]
+        ] = [
+            arr[j],
+            arr[i]
+        ];
+
+    }
+
+    return arr;
+}
+
+
+/*
+   Ambil pasangan nama dari array:
+
+   ["shannon","harrison","rosie","hawkins"]
+
+   menjadi:
+
+   depan:
+   shannon
+   rosie
+
+   belakang:
+   harrison
+   hawkins
+*/
+
+function prepareNames(list){
+
+    const firstNames = [];
+    const lastNames = [];
+
+    for(
+        let i = 0;
+        i < list.length - 1;
+        i += 2
+    ){
+
+        firstNames.push(
+            list[i]
+        );
+
+        lastNames.push(
+            list[i + 1]
+        );
+
+    }
+
+    return {
+        firstNames,
+        lastNames
+    };
+
+}
+
+
+/*
+   Bersihkan nama untuk username
+*/
+
+function cleanName(name){
+
+    return name
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g,"");
+
+}
+
+
+/*
+   Angka random
+*/
+
+function randomNumber(){
+
+    return Math.floor(
+        Math.random() * 9000
+    ) + 1000;
+
+}
+
+
+/* =========================================================
+   USERNAME GENERATOR
+   ========================================================= */
+
+function makeUsername(
+    first,
+    last,
+    style
+){
+
+    const f = cleanName(first);
+    const l = cleanName(last);
+
+    const num = randomNumber();
+
+    const patterns = {
+
+        aesthetic: [
+            `${f}${l}`,
+            `${f}.${l}`,
+            `${f}_${l}`,
+            `${f}${num}`,
+            `${f}_${num}`,
+            `${f}.${num}`,
+            `${f}${l}${num}`,
+            `${f}_${l}${num}`
+        ],
+
+        clean: [
+            `${f}${l}`,
+            `${f}${num}`,
+            `${f}${l}${num}`,
+            `${f}${l.slice(0,2)}`
+        ],
+
+        cute: [
+            `${f}_${l}`,
+            `${f}.${l}`,
+            `${f}${num}`,
+            `${f}_${num}`,
+            `${f}${l}${num}`,
+            `${f}.${num}`
+        ],
+
+        classy: [
+            `${f}.${l}`,
+            `${f}${l}`,
+            `${f}_${l}`,
+            `${f}${l.slice(0,2)}`,
+            `${f}${num}`
+        ],
+
+        short: [
+            `${f.slice(0,4)}${l.slice(0,3)}`,
+            `${f.slice(0,5)}${num}`,
+            `${f.slice(0,3)}${l.slice(0,3)}`,
+            `${f}${l.slice(0,2)}`
+        ]
+
+    };
+
+
+    if(style === "random"){
+
+        const allPatterns = [
+
+            `${f}${l}`,
+            `${f}.${l}`,
+            `${f}_${l}`,
+            `${f}${num}`,
+            `${f}_${num}`,
+            `${f}.${num}`,
+            `${num}${f}`,
+            `${num}_${f}`,
+            `${f}${l}${num}`,
+            `${f}_${l}${num}`,
+            `${f}.${l}${num}`,
+            `${f}${num}_`,
+            `_${f}${num}`,
+            `${f}_${num}`
+
+        ];
+
+        return randomItem(
+            allPatterns
+        );
+
+    }
+
+
+    return randomItem(
+        patterns[style] || patterns.clean
+    );
+
+}
+
+
+/* =========================================================
+   GENERATE
+   ========================================================= */
+
+let generated = [];
+
+
+function generate(){
+
+    let amount = parseInt(
+        document.getElementById("amount").value
+    );
+
+    if(
+        isNaN(amount) ||
+        amount < 1
+    ){
+
+        amount = 1;
+
+    }
+
+    if(amount > 100){
+
+        amount = 100;
+
+    }
+
+
+    const country =
+        document.getElementById("country").value;
+
+    const style =
+        document.getElementById("style").value;
+
+
+    const data =
+        prepareNames(
+            names[country]
+        );
+
+
+    /*
+       ACAK NAMA DEPAN
+    */
+
+    const firstNames =
+        shuffle(
+            data.firstNames
+        );
+
+
+    /*
+       ACAK NAMA BELAKANG
+    */
+
+    const lastNames =
+        shuffle(
+            data.lastNames
+        );
+
+
+    generated = [];
+
+    const used =
+        new Set();
+
+
+    /*
+       Kita buat kombinasi unik.
+       Kalau jumlah lebih banyak daripada
+       kombinasi yang tersedia, sistem akan
+       berhenti pada kombinasi maksimal.
+    */
+
+    let attempts = 0;
+
+    const maxAttempts =
+        amount * 50;
+
+
+    while(
+        generated.length < amount &&
+        attempts < maxAttempts
+    ){
+
+        attempts++;
+
+
+        /*
+           Ambil nama depan secara acak
+        */
+
+        const first =
+            randomItem(firstNames);
+
+
+        /*
+           Ambil nama belakang secara acak
+        */
+
+        const last =
+            randomItem(lastNames);
+
+
+        /*
+           Pastikan bukan nama depan = belakang
+        */
+
+        if(
+            first === last
+        ){
+
+            continue;
+
+        }
+
+
+        const fullName =
+            `${first} ${last}`;
+
+
+        /*
+           Hindari pasangan nama yang sama
+        */
+
+        if(
+            used.has(
+                fullName.toLowerCase()
+            )
+        ){
+
+            continue;
+
+        }
+
+
+        used.add(
+            fullName.toLowerCase()
+        );
+
+
+        const username =
+            makeUsername(
+                first,
+                last,
+                style
+            );
+
+
+        generated.push({
+
+            username,
+            fullName
+
+        });
+
+    }
+
+
+    render();
+
+}
+
+
+/* =========================================================
+   RENDER HASIL
+   ========================================================= */
+
+function render(){
+
+    const container =
+        document.getElementById("results");
+
+    const count =
+        document.getElementById("count");
+
+
+    if(
+        generated.length === 0
+    ){
+
+        container.innerHTML = `
+            <div class="empty">
+                Belum ada username.
+            </div>
+        `;
+
+        count.textContent = "";
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        generated.map(
+            (item,index) => {
+
+                return `
+
+                <div class="result-item">
+
+                    <div class="result-info">
+
+                        <div class="username">
+                            ${item.username}
+                        </div>
+
+                        <div class="full-name">
+                            ${item.fullName}
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="copy"
+                        data-index="${index}"
+                    >
+                        COPY
+                    </button>
+
+                </div>
+
+                `;
+
+            }
+        ).join("");
+
+
+    count.textContent =
+        `${generated.length} username generated`;
+
+
+    document
+        .querySelectorAll(".copy")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                async function(){
+
+                    const index =
+                        this.dataset.index;
+
+                    const username =
+                        generated[index].username;
+
+
+                    try{
+
+                        await navigator
+                            .clipboard
+                            .writeText(
+                                username
+                            );
+
+                        this.textContent =
+                            "COPIED";
+
+                        this.classList.add(
+                            "done"
+                        );
+
+
+                        setTimeout(() => {
+
+                            this.textContent =
+                                "COPY";
+
+                            this.classList.remove(
+                                "done"
+                            );
+
+                        },1000);
+
+                    }catch(error){
+
+                        alert(
+                            "Gagal copy username."
+                        );
+
+                    }
+
+                }
+            );
+
+        });
+
+}
+
+
+/* =========================================================
+   COPY ALL
+   ========================================================= */
+
+document
+    .getElementById("copyAll")
+    .addEventListener(
+        "click",
+        async function(){
+
+            if(
+                generated.length === 0
+            ){
+
+                return;
+
+            }
+
+
+            const text =
+                generated
+                    .map(
+                        item =>
+                            item.username
+                    )
+                    .join("\n");
+
+
+            try{
+
+                await navigator
+                    .clipboard
+                    .writeText(
+                        text
+                    );
+
+
+                const original =
+                    this.textContent;
+
+
+                this.textContent =
+                    "✓ COPIED";
+
+
+                setTimeout(() => {
+
+                    this.textContent =
+                        original;
+
+                },1000);
+
+
+            }catch(error){
+
+                alert(
+                    "Gagal copy semua username."
+                );
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   GENERATE BUTTON
+   ========================================================= */
+
+document
+    .getElementById("generate")
+    .addEventListener(
+        "click",
+        generate
+    );
+
+
+/* =========================================================
+   ENTER PADA INPUT JUMLAH
+   ========================================================= */
+
+document
+    .getElementById("amount")
+    .addEventListener(
+        "keydown",
+        function(event){
+
+            if(
+                event.key === "Enter"
+            ){
+
+                generate();
+
+            }
+
+        }
+    );
+
+</script>
+
+    <!-- PROTEKSI -->
+<script>
+document.addEventListener("contextmenu", function(e) {
+    e.preventDefault();
+});
+
+document.addEventListener("keydown", function(e) {
+
+    if (e.ctrlKey && e.key.toLowerCase() === "u") {
+        e.preventDefault();
+        return false;
+    }
+
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") {
+        e.preventDefault();
+        return false;
+    }
+
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "j") {
+        e.preventDefault();
+        return false;
+    }
+
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "c") {
+        e.preventDefault();
+        return false;
+    }
+
+    if (e.key === "F12") {
+        e.preventDefault();
+        return false;
+    }
+
+});
+</script>
+
+</body>
+</html>
+
+</body>
+</html>
